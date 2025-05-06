@@ -12,18 +12,10 @@ const lessons = {
 let calculator;
 
 window.onload = () => {
-  // Setup Desmos (Make sure to add your API key here)
-  const script = document.createElement('script');
-  script.src = 'https://www.desmos.com/api/v1.6/calculator.js?apiKey=YOUR_API_KEY';
-  document.head.appendChild(script);
+  // Setup Desmos
+  calculator = Desmos.GraphingCalculator(document.getElementById("calculator"), { expressions: true });
 
-  // Load lessons when Desmos is ready
-  script.onload = () => {
-    // Initialize the Desmos graphing calculator
-    calculator = Desmos.GraphingCalculator(document.getElementById("calculator"), { expressions: true });
-  };
-
-  // Load lessons list
+  // Load lessons
   const lessonList = document.getElementById("lesson-list");
   Object.entries(lessons).forEach(([key, value], index) => {
     const btn = document.createElement("button");
@@ -39,11 +31,67 @@ window.onload = () => {
     lessonList.appendChild(li);
   });
 
-  // Load the first lesson by default
+  // Load first lesson
   loadLesson("basics");
 };
 
 function loadLesson(key) {
   const lesson = lessons[key];
   document.getElementById("lesson-title").textContent = lesson.title;
-  document
+  document.getElementById("lesson-text").textContent = lesson.content;
+}
+
+function handleSolve() {
+  const a = parseFloat(document.getElementById("a").value);
+  const b = parseFloat(document.getElementById("b").value);
+  const c = parseFloat(document.getElementById("c").value);
+  const output = document.getElementById("solution-output");
+
+  if (isNaN(a) || isNaN(b) || isNaN(c)) {
+    output.innerHTML = "Please enter valid numbers.";
+    return;
+  }
+
+  const disc = b * b - 4 * a * c;
+  let steps = `Discriminant: ${disc}<br>`;
+
+  if (disc < 0) {
+    steps += "No real roots.";
+  } else if (disc === 0) {
+    const root = (-b / (2 * a)).toFixed(2);
+    steps += `One real root: x = ${root}`;
+  } else {
+    const root1 = ((-b + Math.sqrt(disc)) / (2 * a)).toFixed(2);
+    const root2 = ((-b - Math.sqrt(disc)) / (2 * a)).toFixed(2);
+    steps += `Two real roots: x₁ = ${root1}, x₂ = ${root2}`;
+  }
+
+  output.innerHTML = steps;
+}
+
+function handleCoefficientSolve() {
+  const aVal = document.getElementById("coef-a").value;
+  const bVal = document.getElementById("coef-b").value;
+  const cVal = document.getElementById("coef-c").value;
+  const x = parseFloat(document.getElementById("x-point").value);
+  const y = parseFloat(document.getElementById("y-point").value);
+  const output = document.getElementById("coef-output");
+
+  if (isNaN(x) || isNaN(y)) {
+    output.textContent = "Invalid point.";
+    return;
+  }
+
+  let result;
+  if (aVal === "?" && !isNaN(bVal) && !isNaN(cVal)) {
+    result = (y - bVal * x - cVal) / (x * x);
+  } else if (bVal === "?" && !isNaN(aVal) && !isNaN(cVal)) {
+    result = (y - aVal * x * x - cVal) / x;
+  } else if (cVal === "?" && !isNaN(aVal) && !isNaN(bVal)) {
+    result = y - aVal * x * x - bVal * x;
+  } else {
+    result = "Invalid or unsupported input.";
+  }
+
+  output.textContent = `Solved coefficient: ${result}`;
+}
