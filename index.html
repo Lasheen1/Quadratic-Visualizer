@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quadratic Mastery</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://www.desmos.com/api/v1.6/calculator.js?apiKey=YOUR_API_KEY" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h2>Lessons</h2>
+      <ul id="lesson-list"></ul>
+    </aside>
+
+    <main class="main-content">
+      <h1>Quadratic Mastery</h1>
+      <div id="calculator" class="calculator"></div>
+
+      <div class="lesson-content">
+        <h2 id="lesson-title"></h2>
+        <p id="lesson-text"></p>
+      </div>
+
+      <div class="solver">
+        <h3>Quadratic Solver</h3>
+        <input id="a" placeholder="a" />
+        <input id="b" placeholder="b" />
+        <input id="c" placeholder="c" />
+        <button onclick="handleSolve()">Solve</button>
+        <div id="solution-output"></div>
+      </div>
+
+      <div class="coefficient-solver">
+        <h3>Coefficient Solver</h3>
+        <p>Use ? for the unknown coefficient.</p>
+        <input id="coef-a" placeholder="a" />
+        <input id="coef-b" placeholder="b" />
+        <input id="coef-c" placeholder="c" />
+        <input id="x-point" placeholder="x" />
+        <input id="y-point" placeholder="y" />
+        <button onclick="handleCoefficientSolve()">Solve Coefficient</button>
+        <div id="coef-output"></div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
